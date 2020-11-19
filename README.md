@@ -74,7 +74,7 @@ Once a thread is idle (finishing its current work), it tries to find some works 
 Each thread holds a work list to track its current state and record the remaining work. When one thread finishes its work, it tries to find other works from other threads by examining work lists of other threads.
 
 Work list will be read and changed by different threads when a robbery occurs, which cause a race condition.
- 
+
 Work list is designed as an concurrent doubly linked list, and we use openmp_lock to ensure read-after-write consistency.
 
 ### Race condition on masks updates
@@ -113,27 +113,6 @@ When robbery happen, the idle thread will copy all the masks and board informati
 
 Finally we have done scalability analysis of this sudoku solver. Due to 9 by 9 sudoku is way to fast to be solved, we conduct experiment on 16 by 16 sudoku.
 
-Our sudoku solver achieves linear speedup when thread number is no more than 6, in fact even superlinear speedup on some tests with multiple solutions. The superlinear speedup was possible because with multiple threads, the solver could arrive at one solution faster, and kill all the other threads before they did extra work. 
-
-When the thread number is bigger than 6, the speed up will be tapered off, because the solver was so fast that the overhead of spawning threads outweigh the benefits of parallelization.
-
-**Execution Time for 16x16 Sudoku**
-
-![exec_time_16](pic/exec_time_16.png)
-
-Sudoku solver achieved minimum execution time with 6 threads.
-
-**Speed Up for 16x16 Sudoku**
-
-![speed_up_16](pic/speed_up_16.png)
-
-Speed up is defined as the ratio of single thread runtime to multithread runtime. Sudoku solver achieved best speed up with 6 threads.
-
-**Efficiency for 16x16 Sudoku**
-
-![efficiency_16](pic/efficiency_16.png)
-
-Efficiency is defined as the ratio of speedup to the number of processors. Efficiency measures the fraction of time for which a processor is usefully utilized. We get the best efficiency when using 4 threads.
-
+Details are covered in submitted version.
 
 
